@@ -1,0 +1,27 @@
+# Flutter
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+
+# Android
+android/.gradle/
+*.jks
+key.properties
+
+# Fastlane secrets
+fastlane/keys/
+fastlane/.env
+fastlane/api_key.json
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
