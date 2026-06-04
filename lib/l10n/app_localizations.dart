@@ -74,6 +74,9 @@ class AppLocalizations {
   String get realSizePdf => get('real_size_pdf');
   String get hiResPdf => get('hi_res_pdf');
   String get purchaseBtn => get('purchase_btn');
+  String get processing => get('processing');
+  String get purchased => get('purchased');
+  String get error => get('error');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -102,6 +105,9 @@ class AppLocalizations {
       'premium_title': 'PREMIUM',
       'premium_price': '¥500 で購入',
       'restore': '購入を復元',
+      'processing': '処理中...',
+      'purchased': '購入済み',
+      'error': 'エラー',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -166,6 +172,9 @@ class AppLocalizations {
       'premium_title': 'PREMIUM',
       'premium_price': 'Buy for \$4.99',
       'restore': 'Restore Purchase',
+      'processing': 'Processing...',
+      'purchased': 'Purchased',
+      'error': 'Error',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -230,6 +239,9 @@ class AppLocalizations {
       'premium_title': '高级版',
       'premium_price': '¥30 购买',
       'restore': '恢复购买',
+      'processing': '处理中...',
+      'purchased': '已购买',
+      'error': '错误',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',

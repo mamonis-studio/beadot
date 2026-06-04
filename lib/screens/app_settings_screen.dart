@@ -4,6 +4,7 @@ import '../constants.dart';
 import '../l10n/app_localizations.dart';
 import '../models/bead_brand.dart';
 import '../services/preference_service.dart';
+import '../services/purchase_service.dart';
 import 'premium_screen.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
@@ -19,7 +20,6 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
   bool _removeIsolated = true;
   bool _darkMode = false;
   String _language = 'ja';
-  bool _isPremium = false;
 
   @override
   void initState() {
@@ -32,14 +32,12 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
     final iso = await PreferenceService.getRemoveIsolated();
     final dark = await PreferenceService.getDarkMode();
     final lang = await PreferenceService.getLanguage();
-    final prem = await PreferenceService.isPremium();
     if (mounted) {
       setState(() {
         _defaultBrand = brand;
         _removeIsolated = iso;
         _darkMode = dark;
         _language = lang;
-        _isPremium = prem;
       });
     }
   }
@@ -56,10 +54,12 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l.settings)),
-      body: ListView(
+      body: ValueListenableBuilder<bool>(
+        valueListenable: PurchaseService.isPremium,
+        builder: (context, isPremium, _) => ListView(
         children: [
           // Premium
-          if (!_isPremium)
+          if (!isPremium)
             _buildTile(
               icon: Icons.star,
               label: l.premiumTitle,
@@ -163,7 +163,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
           ),
           const SizedBox(height: 48),
         ],
-      ),
+      )),
     );
   }
 

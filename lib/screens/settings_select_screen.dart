@@ -7,6 +7,7 @@ import '../models/conversion_settings.dart';
 import '../models/plate_shape.dart';
 import '../models/plate_size.dart';
 import '../services/preference_service.dart';
+import '../services/purchase_service.dart';
 import '../widgets/plate_shape_selector.dart';
 import '../widgets/segment_control.dart';
 import 'crop_screen.dart';
@@ -27,7 +28,6 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
   double _ditherStrength = 0.5;
   int _maxColors = 12;
   ColorFilter _colorFilter = ColorFilter.solidOnly;
-  bool _isPremium = false;
 
   @override
   void initState() {
@@ -37,10 +37,8 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
 
   Future<void> _loadDefaults() async {
     final brand = await PreferenceService.getDefaultBrand();
-    final premium = await PreferenceService.isPremium();
     setState(() {
       _brand = brand;
-      _isPremium = premium;
       _maxColors = ConversionDefaults.defaultMaxColors(_size.columns);
     });
   }
@@ -72,7 +70,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
   }
 
   void _onSizeChanged(PlateSize size) {
-    if (size.isPremium && !_isPremium) {
+    if (size.isPremium && !PurchaseService.isPremium.value) {
       _showPremiumDialog();
       return;
     }
@@ -90,7 +88,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
   }
 
   void _showCustomSizeDialog() {
-    if (!_isPremium) {
+    if (!PurchaseService.isPremium.value) {
       _showPremiumDialog();
       return;
     }
@@ -164,7 +162,9 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
         ),
         title: Text(l.selectSettings),
       ),
-      body: SingleChildScrollView(
+      body: ValueListenableBuilder<bool>(
+        valueListenable: PurchaseService.isPremium,
+        builder: (context, isPremium, _) => SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +238,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
             const SizedBox(height: 16),
             _sectionLabel(l.plateSize),
             const SizedBox(height: 8),
-            ..._buildSizeButtons(),
+            ..._buildSizeButtons(isPremium),
 
             // QUALITY
             const SizedBox(height: 16),
@@ -325,7 +325,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
             const SizedBox(height: 32),
           ],
         ),
-      ),
+      )),
     );
   }
 
@@ -336,7 +336,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
     );
   }
 
-  List<Widget> _buildSizeButtons() {
+  List<Widget> _buildSizeButtons(bool isPremium) {
     final sizes = _availableSizes;
     final buttons = <Widget>[];
 
@@ -365,7 +365,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (size.isPremium && !_isPremium) ...[
+                  if (size.isPremium && !isPremium) ...[
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -410,7 +410,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (!_isPremium) ...[
+                  if (!isPremium) ...[
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
