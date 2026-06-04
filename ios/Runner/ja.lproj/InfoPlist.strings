@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "beadotはアイロンビーズの図案を作成するために写真を撮影します";
+NSPhotoLibraryUsageDescription = "beadotはアイロンビーズの図案を作成するために写真ライブラリにアクセスします";
+NSPhotoLibraryAddUsageDescription = "beadotは作成した図案を写真ライブラリに保存します";

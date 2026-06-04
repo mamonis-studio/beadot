@@ -1,27 +1,109 @@
-# Flutter
-build/
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter / Dart / Pub
+**/doc/api/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
-
-# iOS
-ios/Pods/
-ios/.symlinks/
+.pub-cache/
+.pub/
+/build/
+build/
+flutter_*.png
+linked_*.ds
+unlinked.ds
+unlinked_spec.ds
+# NOTE: pubspec.lock は意図的に追跡する（アプリのため依存を固定）
 
 # Android
+**/android/**/gradle-wrapper.jar
+.gradle/
 android/.gradle/
-*.jks
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
 key.properties
+*.jks
+*.keystore
 
-# Fastlane secrets
+# iOS / Xcode
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+ios/Pods/
+**/ios/**/.symlinks/
+ios/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Exceptions to above rules.
+!**/ios/**/default.mode1v3
+!**/ios/**/default.mode2v3
+!**/ios/**/default.pbxuser
+!**/ios/**/default.perspectivev3
+
+# Signing keys / certificates / secrets
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.certSigningRequest
+**/ios/**/GoogleService-Info.plist
+**/android/**/google-services.json
+
+# Fastlane
 fastlane/keys/
 fastlane/.env
 fastlane/api_key.json
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
 
-# IDE
-.idea/
-.vscode/
-
-# OS
-.DS_Store
+# Project-local backups
+*.zip

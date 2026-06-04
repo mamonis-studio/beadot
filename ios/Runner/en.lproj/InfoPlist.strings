@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "beadot needs camera access to take photos for creating bead patterns";
+NSPhotoLibraryUsageDescription = "beadot needs photo library access to select photos for creating bead patterns";
+NSPhotoLibraryAddUsageDescription = "beadot saves created bead patterns to your photo library";

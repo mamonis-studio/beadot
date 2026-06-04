@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "beadot需要使用相机拍摄照片来制作拼豆图案";
+NSPhotoLibraryUsageDescription = "beadot需要访问照片库来选择照片制作拼豆图案";
+NSPhotoLibraryAddUsageDescription = "beadot会将创建的拼豆图案保存到照片库";
