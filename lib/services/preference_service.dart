@@ -85,7 +85,8 @@ class PreferenceService {
     final today = _todayString();
 
     if (lastDate != today) {
-      // New day: reset counter
+      // Different day: today has no recorded usage yet, so allow generation.
+      // The stored count is reset by recordGeneration when the date changes.
       return true;
     }
 
