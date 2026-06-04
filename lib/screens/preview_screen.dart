@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/pattern_data.dart';
+import '../services/photo_storage.dart';
 
 class PreviewScreen extends StatefulWidget {
   final PatternData pattern;
@@ -13,6 +14,20 @@ class PreviewScreen extends StatefulWidget {
 
 class _PreviewScreenState extends State<PreviewScreen> {
   bool _showOriginal = false;
+  String? _resolvedPhotoPath;
+
+  @override
+  void initState() {
+    super.initState();
+    _resolvePhoto();
+  }
+
+  Future<void> _resolvePhoto() async {
+    final path = await PhotoStorage.resolve(widget.pattern.originalPhotoPath);
+    if (mounted) {
+      setState(() => _resolvedPhotoPath = path);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +68,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Widget _buildOriginalPhoto() {
-    final file = File(widget.pattern.originalPhotoPath);
+    final path = _resolvedPhotoPath;
+    if (path == null) {
+      return const Center(key: ValueKey('original'), child: SizedBox.shrink());
+    }
+    final file = File(path);
     if (!file.existsSync()) {
       return const Center(child: Text('Photo not found', style: TextStyle(color: Color(0xFF888888))));
     }

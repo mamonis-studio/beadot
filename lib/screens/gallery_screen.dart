@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/pattern_data.dart';
 import '../services/database_service.dart';
+import '../services/photo_storage.dart';
 import 'pattern_screen.dart';
 
 class GalleryScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     if (confirm == true && pattern.dbId != null) {
       await DatabaseService.deletePattern(pattern.dbId!);
       // Delete photo file
-      try { await File(pattern.originalPhotoPath).delete(); } catch (_) {}
+      await PhotoStorage.delete(pattern.originalPhotoPath);
       _loadPatterns();
     }
   }

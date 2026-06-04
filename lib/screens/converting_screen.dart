@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import '../l10n/app_localizations.dart';
 import '../models/bead_color.dart';
 import '../models/conversion_settings.dart';
 import '../models/pattern_data.dart';
 import '../data/bead_colors_loader.dart';
+import '../services/photo_storage.dart';
 import '../services/conversion_service.dart';
 import '../services/database_service.dart';
 import '../services/preference_service.dart';
@@ -80,11 +79,11 @@ class _ConvertingScreenState extends State<ConvertingScreen> {
       if (_cancelled || !mounted) return;
 
       // Save original photo
-      final docsDir = await getApplicationDocumentsDirectory();
       final photoName = 'photo_${DateTime.now().millisecondsSinceEpoch}.png';
-      final photoPath = p.join(docsDir.path, 'photos', photoName);
-      await Directory(p.dirname(photoPath)).create(recursive: true);
-      await File(photoPath).writeAsBytes(img.encodePng(widget.croppedImage));
+      final storedPhotoPath = await PhotoStorage.savePhoto(
+        img.encodePng(widget.croppedImage),
+        photoName,
+      );
 
       // Build PatternData
       final usedColors = result.usedColorsJson.map(
@@ -96,7 +95,7 @@ class _ConvertingScreenState extends State<ConvertingScreen> {
         settings: widget.settings,
         grid: result.grid,
         usedColors: usedColors,
-        originalPhotoPath: photoPath,
+        originalPhotoPath: storedPhotoPath,
       );
 
       // Save to DB
