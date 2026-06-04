@@ -140,7 +140,6 @@ class _CropScreenState extends State<CropScreen> {
           builder: (_) => ConvertingScreen(
             croppedImage: cropped,
             settings: widget.settings,
-            originalPhotoFile: widget.photoFile,
           ),
         ),
       );

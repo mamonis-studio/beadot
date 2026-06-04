@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import '../l10n/app_localizations.dart';
@@ -15,13 +14,11 @@ import 'pattern_screen.dart';
 class ConvertingScreen extends StatefulWidget {
   final img.Image croppedImage;
   final ConversionSettings settings;
-  final File originalPhotoFile;
 
   const ConvertingScreen({
     super.key,
     required this.croppedImage,
     required this.settings,
-    required this.originalPhotoFile,
   });
 
   @override
