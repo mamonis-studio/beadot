@@ -77,6 +77,10 @@ class AppLocalizations {
   String get processing => get('processing');
   String get purchased => get('purchased');
   String get error => get('error');
+  String purchaseButton(String price) =>
+      get('purchase_btn_tpl').replaceAll('{price}', price);
+  String get noRestore => get('no_restore');
+  String get restored => get('restored');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -108,6 +112,9 @@ class AppLocalizations {
       'processing': '処理中...',
       'purchased': '購入済み',
       'error': 'エラー',
+      'purchase_btn_tpl': '{price} で購入',
+      'no_restore': '復元できる購入がありません',
+      'restored': '復元しました',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -175,6 +182,9 @@ class AppLocalizations {
       'processing': 'Processing...',
       'purchased': 'Purchased',
       'error': 'Error',
+      'purchase_btn_tpl': 'Buy for {price}',
+      'no_restore': 'No purchases to restore',
+      'restored': 'Restored',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -242,6 +252,9 @@ class AppLocalizations {
       'processing': '处理中...',
       'purchased': '已购买',
       'error': '错误',
+      'purchase_btn_tpl': '{price} 购买',
+      'no_restore': '没有可恢复的购买',
+      'restored': '已恢复',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',

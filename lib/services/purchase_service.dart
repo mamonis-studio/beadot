@@ -11,6 +11,8 @@ class PurchaseService {
   static final InAppPurchase _iap = InAppPurchase.instance;
   static StreamSubscription<List<PurchaseDetails>>? _subscription;
   static bool _listening = false;
+  static bool _productLoaded = false;
+  static Completer<bool>? _restoreCompleter;
 
   /// Premium entitlement. Seeded from local prefs at startup and updated live
   /// when a purchase/restore is delivered through the stream.
@@ -22,6 +24,11 @@ class PurchaseService {
 
   /// Last error message; valid while [phase] == PurchasePhase.error.
   static final ValueNotifier<String?> errorMessage =
+      ValueNotifier<String?>(null);
+
+  /// Localized store price string (e.g. "\u00a5500"); null until loaded
+  /// or if the product fetch fails (UI then falls back to a bundled label).
+  static final ValueNotifier<String?> priceLabel =
       ValueNotifier<String?>(null);
 
   /// Seed the entitlement from the persisted flag. Cheap (a prefs read);
@@ -48,6 +55,25 @@ class PurchaseService {
         errorMessage.value = error.toString();
       },
     );
+
+    // Fetch the localized store price (non-blocking).
+    loadProduct();
+  }
+
+  /// Fetch the localized store price into [priceLabel]. Guarded so it only
+  /// succeeds once; on failure priceLabel stays null for fallback.
+  static Future<void> loadProduct() async {
+    if (_productLoaded) return;
+    try {
+      final response =
+          await _iap.queryProductDetails({AppStrings.premiumProductId});
+      if (response.productDetails.isNotEmpty) {
+        priceLabel.value = response.productDetails.first.price;
+        _productLoaded = true;
+      }
+    } catch (_) {
+      // Leave priceLabel null; UI falls back to the bundled price string.
+    }
   }
 
   static Future<void> _onPurchaseUpdate(
@@ -61,6 +87,11 @@ class PurchaseService {
         case PurchaseStatus.purchased:
         case PurchaseStatus.restored:
           await _deliver(purchase);
+          if (purchase.status == PurchaseStatus.restored &&
+              _restoreCompleter != null &&
+              !_restoreCompleter!.isCompleted) {
+            _restoreCompleter!.complete(true);
+          }
           phase.value = PurchasePhase.idle;
           errorMessage.value = null;
           break;
@@ -110,16 +141,30 @@ class PurchaseService {
     }
   }
 
-  /// Restore previous purchases. Restored entitlements arrive via the stream.
-  static Future<void> restorePurchases() async {
+  /// Restore previous purchases. Returns true if an entitlement was restored
+  /// (delivered via the stream), false if nothing was restored within a short
+  /// window. Restored entitlements still unlock premium regardless.
+  static Future<bool> restorePurchases() async {
     await startListening();
     phase.value = PurchasePhase.pending;
     errorMessage.value = null;
+
+    final completer = Completer<bool>();
+    _restoreCompleter = completer;
+
     await _iap.restorePurchases();
+
+    final result = await completer.future
+        .timeout(const Duration(seconds: 3), onTimeout: () => false);
+
+    if (identical(_restoreCompleter, completer)) {
+      _restoreCompleter = null;
+    }
     // Clear the spinner if nothing was delivered (e.g. nothing to restore).
     if (phase.value == PurchasePhase.pending) {
       phase.value = PurchasePhase.idle;
     }
+    return result;
   }
 
   /// Dispose the listener (rarely needed; the service lives for app lifetime).

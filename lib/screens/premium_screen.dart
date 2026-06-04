@@ -18,12 +18,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
     PurchaseService.errorMessage.value = null;
     PurchaseService.isPremium.addListener(_onPremiumChanged);
     PurchaseService.phase.addListener(_onPhaseChanged);
+    PurchaseService.priceLabel.addListener(_onPriceChanged);
   }
 
   @override
   void dispose() {
     PurchaseService.isPremium.removeListener(_onPremiumChanged);
     PurchaseService.phase.removeListener(_onPhaseChanged);
+    PurchaseService.priceLabel.removeListener(_onPriceChanged);
     super.dispose();
   }
 
@@ -48,6 +50,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
     setState(() {});
   }
 
+  void _onPriceChanged() {
+    if (mounted) setState(() {});
+  }
+
   Future<void> _purchase() async {
     try {
       await PurchaseService.purchasePremium();
@@ -58,7 +64,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   Future<void> _restore() async {
     try {
-      await PurchaseService.restorePurchases();
+      final ok = await PurchaseService.restorePurchases();
+      if (!mounted) return;
+      final l = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(ok ? l.restored : l.noRestore)),
+      );
     } catch (_) {}
   }
 
@@ -67,6 +78,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final l = AppLocalizations.of(context);
     final busy = PurchaseService.phase.value == PurchasePhase.pending;
     final alreadyPremium = PurchaseService.isPremium.value;
+    final price = PurchaseService.priceLabel.value;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -123,7 +135,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                         )
                       : Text(
-                          alreadyPremium ? l.purchased : l.purchaseBtn,
+                          alreadyPremium
+                              ? l.purchased
+                              : (price != null
+                                  ? l.purchaseButton(price)
+                                  : l.purchaseBtn),
                           style: const TextStyle(fontSize: 16, letterSpacing: 2),
                         ),
                 ),
