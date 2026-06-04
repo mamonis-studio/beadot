@@ -11,7 +11,8 @@ class ImagePreprocessor {
   /// Apply full preprocessing pipeline.
   static img.Image preprocess(img.Image source) {
     var result = source;
-    result = applyGaussianBlur(result, sigma: 0.5);
+    // No pre-blur: the area-average resize already low-passes, so blurring
+    // here would double-smooth and lose detail.
     result = applyHistogramStretch(result, clipPercent: histogramClipPercent);
     result = applySaturationBoost(result, factor: 1.1);
     return result;

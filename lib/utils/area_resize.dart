@@ -1,9 +1,23 @@
+import 'dart:math';
 import 'package:image/image.dart' as img;
 
 /// Area interpolation resize (equivalent to OpenCV INTER_AREA).
 /// Best for downscaling: averages pixel areas for minimal information loss.
 /// Bead patterns are always downscaled, so Area interpolation is ideal.
 class AreaResize {
+  /// sRGB (0..255) -> linear-light (0..1) lookup table.
+  static final List<double> _srgbToLinear = List.generate(256, (i) {
+    final c = i / 255.0;
+    return c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4).toDouble();
+  });
+
+  /// Linear-light (0..1) -> sRGB (0..255).
+  static int _linearToSrgb(double l) {
+    final v = l.clamp(0.0, 1.0).toDouble();
+    final s = v <= 0.0031308 ? v * 12.92 : 1.055 * pow(v, 1 / 2.4) - 0.055;
+    return (s * 255.0).round().clamp(0, 255).toInt();
+  }
+
   /// Resize image to target dimensions using area interpolation.
   static img.Image resize(img.Image source, int targetWidth, int targetHeight) {
     final srcW = source.width;
@@ -49,9 +63,9 @@ class AreaResize {
             final area = (overlapX1 - overlapX0) * (overlapY1 - overlapY0);
             final pixel = source.getPixel(ix.clamp(0, srcW - 1), iy.clamp(0, srcH - 1));
 
-            rSum += pixel.r * area;
-            gSum += pixel.g * area;
-            bSum += pixel.b * area;
+            rSum += _srgbToLinear[pixel.r.toInt()] * area;
+            gSum += _srgbToLinear[pixel.g.toInt()] * area;
+            bSum += _srgbToLinear[pixel.b.toInt()] * area;
             areaSum += area;
           }
         }
@@ -59,9 +73,9 @@ class AreaResize {
         if (areaSum > 0) {
           result.setPixelRgb(
             tx, ty,
-            (rSum / areaSum).round().clamp(0, 255),
-            (gSum / areaSum).round().clamp(0, 255),
-            (bSum / areaSum).round().clamp(0, 255),
+            _linearToSrgb(rSum / areaSum),
+            _linearToSrgb(gSum / areaSum),
+            _linearToSrgb(bSum / areaSum),
           );
         }
       }
