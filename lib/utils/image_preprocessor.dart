@@ -4,11 +4,15 @@ import 'package:image/image.dart' as img;
 /// Image preprocessing pipeline.
 /// Applied before resizing to improve conversion quality.
 class ImagePreprocessor {
+  /// Percentage of the luminance histogram clipped at each end before the
+  /// tone curve is stretched to full range. Lower = gentler contrast.
+  static const double histogramClipPercent = 2.0;
+
   /// Apply full preprocessing pipeline.
   static img.Image preprocess(img.Image source) {
     var result = source;
     result = applyGaussianBlur(result, sigma: 0.5);
-    result = applyHistogramStretch(result, clipPercent: 5.0);
+    result = applyHistogramStretch(result, clipPercent: histogramClipPercent);
     result = applySaturationBoost(result, factor: 1.1);
     return result;
   }
@@ -75,8 +79,12 @@ class ImagePreprocessor {
   }
 
   /// Histogram stretching (contrast auto-adjustment).
-  /// Clips top and bottom [clipPercent]% of histogram, then stretches to full range.
-  static img.Image applyHistogramStretch(img.Image source, {double clipPercent = 5.0}) {
+  /// Clips top and bottom [clipPercent]% of the luminance histogram, then
+  /// builds a luminance tone curve and applies the same scale to R/G/B so hue
+  /// and saturation are preserved (avoids the per-channel color cast that
+  /// stretching each channel independently would introduce).
+  static img.Image applyHistogramStretch(img.Image source,
+      {double clipPercent = histogramClipPercent}) {
     final w = source.width;
     final h = source.height;
     final totalPixels = w * h;
@@ -115,13 +123,21 @@ class ImagePreprocessor {
     final range = (highClip - lowClip).toDouble();
 
     final result = img.Image(width: w, height: h);
+    const eps = 1e-6;
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
         final p = source.getPixel(x, y);
-        final r = ((p.r - lowClip) / range * 255).round().clamp(0, 255);
-        final g = ((p.g - lowClip) / range * 255).round().clamp(0, 255);
-        final b = ((p.b - lowClip) / range * 255).round().clamp(0, 255);
-        result.setPixelRgb(x, y, r, g, b);
+        // Stretch the luminance, then scale R/G/B by the same factor to keep
+        // hue and saturation intact.
+        final lum = 0.299 * p.r + 0.587 * p.g + 0.114 * p.b;
+        final stretched = ((lum - lowClip) / range * 255).clamp(0.0, 255.0);
+        final scale = stretched / (lum < eps ? eps : lum);
+        result.setPixelRgb(
+          x, y,
+          (p.r * scale).round().clamp(0, 255),
+          (p.g * scale).round().clamp(0, 255),
+          (p.b * scale).round().clamp(0, 255),
+        );
       }
     }
     return result;
