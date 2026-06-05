@@ -82,6 +82,7 @@ class AppLocalizations {
   String get openSettings => get('open_settings');
   String get cameraStartFailed => get('camera_start_failed');
   String get retry => get('retry');
+  String get urlOpenFailed => get('url_open_failed');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -118,6 +119,7 @@ class AppLocalizations {
       'open_settings': '設定を開く',
       'camera_start_failed': 'カメラの起動に失敗しました',
       'retry': 'リトライ',
+      'url_open_failed': 'URLを開けませんでした',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -189,6 +191,7 @@ class AppLocalizations {
       'open_settings': 'Open Settings',
       'camera_start_failed': 'Failed to start camera',
       'retry': 'Retry',
+      'url_open_failed': "Couldn't open the link",
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -260,6 +263,7 @@ class AppLocalizations {
       'open_settings': '打开设置',
       'camera_start_failed': '相机启动失败',
       'retry': '重试',
+      'url_open_failed': '无法打开链接',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',

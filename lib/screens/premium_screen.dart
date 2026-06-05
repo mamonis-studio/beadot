@@ -70,7 +70,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(ok ? l.restored : l.noRestore)),
       );
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Restore error: $e');
+      if (mounted) {
+        final l = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l.error}: $e')),
+        );
+      }
+    }
   }
 
   @override

@@ -45,7 +45,15 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> {
   void _openUrl(String url) async {
     try {
       await launchUrl(Uri.parse(url));
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Open URL error: $e');
+      if (mounted) {
+        final l = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.urlOpenFailed)),
+        );
+      }
+    }
   }
 
   @override
