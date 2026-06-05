@@ -81,6 +81,8 @@ class AppLocalizations {
       get('purchase_btn_tpl').replaceAll('{price}', price);
   String get noRestore => get('no_restore');
   String get restored => get('restored');
+  String get choosePhoto => get('choose_photo');
+  String get photoLoadFailed => get('photo_load_failed');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -115,6 +117,8 @@ class AppLocalizations {
       'purchase_btn_tpl': '{price} で購入',
       'no_restore': '復元できる購入がありません',
       'restored': '復元しました',
+      'choose_photo': '写真を選ぶ',
+      'photo_load_failed': '写真の読み込みに失敗しました',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -185,6 +189,8 @@ class AppLocalizations {
       'purchase_btn_tpl': 'Buy for {price}',
       'no_restore': 'No purchases to restore',
       'restored': 'Restored',
+      'choose_photo': 'Choose Photo',
+      'photo_load_failed': 'Failed to load photo',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -255,6 +261,8 @@ class AppLocalizations {
       'purchase_btn_tpl': '{price} 购买',
       'no_restore': '没有可恢复的购买',
       'restored': '已恢复',
+      'choose_photo': '选择照片',
+      'photo_load_failed': '照片加载失败',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',

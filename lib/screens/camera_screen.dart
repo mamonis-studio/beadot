@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../l10n/app_localizations.dart';
 import '../services/database_service.dart';
 import 'settings_select_screen.dart';
 import 'gallery_screen.dart';
@@ -147,10 +148,24 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Future<void> _pickFromGallery() async {
-    final picker = ImagePicker();
-    final xFile = await picker.pickImage(source: ImageSource.gallery, maxWidth: 2048);
-    if (xFile != null && mounted) {
-      _navigateToSettings(File(xFile.path));
+    try {
+      final picker = ImagePicker();
+      final xFile = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 2048,
+        maxHeight: 2048,
+      );
+      if (xFile != null && mounted) {
+        _navigateToSettings(File(xFile.path));
+      }
+    } catch (e) {
+      debugPrint('Pick image error: $e');
+      if (mounted) {
+        final l = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.photoLoadFailed)),
+        );
+      }
     }
   }
 
@@ -271,6 +286,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -290,12 +306,12 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Left: Gallery + Gallery icon
+                  // Left: my patterns + choose-photo entry
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Pattern gallery button (if patterns exist)
-                      if (_patternCount > 0)
+                      if (_patternCount > 0) ...[
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -303,29 +319,51 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                               MaterialPageRoute(builder: (_) => const GalleryScreen()),
                             ).then((_) => _loadPatternCount());
                           },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            margin: const EdgeInsets.only(bottom: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 1.5),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(Icons.grid_view, color: Colors.white, size: 20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white, width: 1.5),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(Icons.grid_view, color: Colors.white, size: 20),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                l.gallery,
+                                style: const TextStyle(color: Colors.white, fontSize: 10, letterSpacing: 1),
+                              ),
+                            ],
                           ),
                         ),
-                      // Gallery picker
+                        const SizedBox(height: 16),
+                      ],
+                      // Choose-photo entry (use an existing photo) - promoted
+                      // to a labelled second entry alongside the shutter.
                       GestureDetector(
                         onTap: _pickFromGallery,
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white, width: 1.5),
-                            color: Colors.white.withValues(alpha: 0.2),
-                          ),
-                          child: const Icon(Icons.photo_library, color: Colors.white, size: 20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.white, width: 1.5),
+                                color: Colors.white.withValues(alpha: 0.2),
+                              ),
+                              child: const Icon(Icons.photo_library, color: Colors.white, size: 26),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              l.choosePhoto,
+                              style: const TextStyle(color: Colors.white, fontSize: 10, letterSpacing: 1),
+                            ),
+                          ],
                         ),
                       ),
                     ],
