@@ -192,6 +192,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Widget _buildCameraPreview() {
+    final l = AppLocalizations.of(context);
     if (_permissionDenied) {
       return ColoredBox(
         color: Colors.black,
@@ -201,16 +202,16 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
             children: [
               const Icon(Icons.camera_alt_outlined, color: Colors.white54, size: 48),
               const SizedBox(height: 16),
-              const Text(
-                'カメラの使用が許可されていません',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+              Text(
+                l.cameraPermissionDenied,
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => openAppSettings(),
-                child: const Text(
-                  '設定を開く',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                child: Text(
+                  l.openSettings,
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ),
             ],
@@ -228,16 +229,16 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
             children: [
               const Icon(Icons.error_outline, color: Colors.white54, size: 48),
               const SizedBox(height: 16),
-              const Text(
-                'カメラの起動に失敗しました',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+              Text(
+                l.cameraStartFailed,
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: _initCamera,
-                child: const Text(
-                  'リトライ',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                child: Text(
+                  l.retry,
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ),
             ],

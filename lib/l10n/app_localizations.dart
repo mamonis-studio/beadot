@@ -83,6 +83,10 @@ class AppLocalizations {
   String get restored => get('restored');
   String get choosePhoto => get('choose_photo');
   String get photoLoadFailed => get('photo_load_failed');
+  String get cameraPermissionDenied => get('camera_permission_denied');
+  String get openSettings => get('open_settings');
+  String get cameraStartFailed => get('camera_start_failed');
+  String get retry => get('retry');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -119,6 +123,10 @@ class AppLocalizations {
       'restored': '復元しました',
       'choose_photo': '写真を選ぶ',
       'photo_load_failed': '写真の読み込みに失敗しました',
+      'camera_permission_denied': 'カメラの使用が許可されていません',
+      'open_settings': '設定を開く',
+      'camera_start_failed': 'カメラの起動に失敗しました',
+      'retry': 'リトライ',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -191,6 +199,10 @@ class AppLocalizations {
       'restored': 'Restored',
       'choose_photo': 'Choose Photo',
       'photo_load_failed': 'Failed to load photo',
+      'camera_permission_denied': 'Camera access not allowed',
+      'open_settings': 'Open Settings',
+      'camera_start_failed': 'Failed to start camera',
+      'retry': 'Retry',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -263,6 +275,10 @@ class AppLocalizations {
       'restored': '已恢复',
       'choose_photo': '选择照片',
       'photo_load_failed': '照片加载失败',
+      'camera_permission_denied': '未允许使用相机',
+      'open_settings': '打开设置',
+      'camera_start_failed': '相机启动失败',
+      'retry': '重试',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',
