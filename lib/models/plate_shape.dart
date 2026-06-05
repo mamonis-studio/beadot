@@ -80,15 +80,4 @@ enum PlateShape {
     }
   }
 
-  /// Crop aspect ratio for this shape (width:height)
-  double get cropAspectRatio {
-    switch (this) {
-      case PlateShape.square:
-      case PlateShape.hexagon:
-      case PlateShape.circle:
-      case PlateShape.heart:
-      case PlateShape.star:
-        return 1.0;
-    }
-  }
 }

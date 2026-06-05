@@ -49,6 +49,5 @@ class PlateSize {
   static const squareSizes = [s, l, twoL, fourL];
   static const hexSizes = [s, l];
   static const circleSizes = [s];
-  static const starSizes = [s];
   static const heartSizes = [s, l];
 }

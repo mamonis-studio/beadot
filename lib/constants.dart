@@ -29,7 +29,6 @@ class AppSizes {
 }
 
 class AppStrings {
-  static const appName = 'beadot';
   static const bundleId = 'mamonis.studio.beadot';
   static const contactEmail = 'contact@mamonis.studio';
   static const privacyUrl = 'https://beadot.mamonis.studio/privacy_policy.html';

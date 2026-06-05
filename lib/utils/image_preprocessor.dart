@@ -18,67 +18,6 @@ class ImagePreprocessor {
     return result;
   }
 
-  /// Gaussian blur for noise reduction.
-  /// σ=0.5 is very light - just enough to smooth sensor noise
-  /// without losing image detail.
-  static img.Image applyGaussianBlur(img.Image source, {double sigma = 0.5}) {
-    final radius = (sigma * 3).ceil();
-    if (radius < 1) return source;
-
-    // Generate 1D kernel
-    final size = radius * 2 + 1;
-    final kernel = List<double>.filled(size, 0);
-    double sum = 0;
-    for (int i = 0; i < size; i++) {
-      final x = i - radius;
-      kernel[i] = exp(-(x * x) / (2 * sigma * sigma));
-      sum += kernel[i];
-    }
-    // Normalize
-    for (int i = 0; i < size; i++) {
-      kernel[i] /= sum;
-    }
-
-    final w = source.width;
-    final h = source.height;
-
-    // Horizontal pass
-    var temp = img.Image(width: w, height: h);
-    for (int y = 0; y < h; y++) {
-      for (int x = 0; x < w; x++) {
-        double rr = 0, gg = 0, bb = 0;
-        for (int k = -radius; k <= radius; k++) {
-          final sx = (x + k).clamp(0, w - 1);
-          final pixel = source.getPixel(sx, y);
-          final weight = kernel[k + radius];
-          rr += pixel.r * weight;
-          gg += pixel.g * weight;
-          bb += pixel.b * weight;
-        }
-        temp.setPixelRgb(x, y, rr.round().clamp(0, 255), gg.round().clamp(0, 255), bb.round().clamp(0, 255));
-      }
-    }
-
-    // Vertical pass
-    var result = img.Image(width: w, height: h);
-    for (int y = 0; y < h; y++) {
-      for (int x = 0; x < w; x++) {
-        double rr = 0, gg = 0, bb = 0;
-        for (int k = -radius; k <= radius; k++) {
-          final sy = (y + k).clamp(0, h - 1);
-          final pixel = temp.getPixel(x, sy);
-          final weight = kernel[k + radius];
-          rr += pixel.r * weight;
-          gg += pixel.g * weight;
-          bb += pixel.b * weight;
-        }
-        result.setPixelRgb(x, y, rr.round().clamp(0, 255), gg.round().clamp(0, 255), bb.round().clamp(0, 255));
-      }
-    }
-
-    return result;
-  }
-
   /// Histogram stretching (contrast auto-adjustment).
   /// Clips top and bottom [clipPercent]% of the luminance histogram, then
   /// builds a luminance tone curve and applies the same scale to R/G/B so hue

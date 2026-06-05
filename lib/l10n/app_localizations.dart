@@ -15,7 +15,6 @@ class AppLocalizations {
   String get(String key) => _strings[locale]?[key] ?? _strings['en']?[key] ?? key;
 
   // Convenience accessors
-  String get appName => get('app_name');
   String get selectSettings => get('select_settings');
   String get brand => get('brand');
   String get plateShape => get('plate_shape');
@@ -25,7 +24,6 @@ class AppLocalizations {
   String get dither => get('dither');
   String get maxColors => get('max_colors');
   String get converting => get('converting');
-  String get save => get('save');
   String get preview => get('preview');
   String get adjustColors => get('adjust_colors');
   String get pdfExport => get('pdf_export');
@@ -33,9 +31,7 @@ class AppLocalizations {
   String get share => get('share');
   String get gallery => get('gallery');
   String get settings => get('settings');
-  String get premium => get('premium');
   String get premiumTitle => get('premium_title');
-  String get premiumPrice => get('premium_price');
   String get restore => get('restore');
   String get solidOnly => get('solid_only');
   String get includePearl => get('include_pearl');
@@ -72,7 +68,6 @@ class AppLocalizations {
   String get customSize => get('custom_size');
   String get noWatermark => get('no_watermark');
   String get realSizePdf => get('real_size_pdf');
-  String get hiResPdf => get('hi_res_pdf');
   String get purchaseBtn => get('purchase_btn');
   String get processing => get('processing');
   String get purchased => get('purchased');
@@ -93,7 +88,6 @@ class AppLocalizations {
 
   static const _strings = {
     'ja': {
-      'app_name': 'beadot',
       'select_settings': 'SELECT SETTINGS',
       'brand': 'BRAND',
       'plate_shape': 'PLATE SHAPE',
@@ -103,7 +97,6 @@ class AppLocalizations {
       'dither': 'DITHER',
       'max_colors': 'MAX COLORS',
       'converting': 'CONVERTING...',
-      'save': '保存',
       'preview': '完成を見る',
       'adjust_colors': '色数調整',
       'pdf_export': 'PDF出力',
@@ -111,9 +104,7 @@ class AppLocalizations {
       'share': 'シェア',
       'gallery': 'GALLERY',
       'settings': '設定',
-      'premium': 'PREMIUM',
       'premium_title': 'PREMIUM',
-      'premium_price': '¥500 で購入',
       'restore': '購入を復元',
       'processing': '処理中...',
       'purchased': '購入済み',
@@ -162,14 +153,12 @@ class AppLocalizations {
       'custom_size': 'カスタムサイズ（最大128×128）',
       'no_watermark': '透かしなし',
       'real_size_pdf': '実寸PDF出力',
-      'hi_res_pdf': '高解像度PDF出力',
       'purchase_btn': '¥500 で購入',
       'perler': 'パーラー',
       'nano': 'ナノ',
       'hama': 'ハマ',
     },
     'en': {
-      'app_name': 'beadot',
       'select_settings': 'SELECT SETTINGS',
       'brand': 'BRAND',
       'plate_shape': 'PLATE SHAPE',
@@ -179,7 +168,6 @@ class AppLocalizations {
       'dither': 'DITHER',
       'max_colors': 'MAX COLORS',
       'converting': 'CONVERTING...',
-      'save': 'Save',
       'preview': 'Preview',
       'adjust_colors': 'Adjust Colors',
       'pdf_export': 'PDF Export',
@@ -187,9 +175,7 @@ class AppLocalizations {
       'share': 'Share',
       'gallery': 'GALLERY',
       'settings': 'Settings',
-      'premium': 'PREMIUM',
       'premium_title': 'PREMIUM',
-      'premium_price': 'Buy for \$4.99',
       'restore': 'Restore Purchase',
       'processing': 'Processing...',
       'purchased': 'Purchased',
@@ -238,14 +224,12 @@ class AppLocalizations {
       'custom_size': 'Custom sizes (up to 128×128)',
       'no_watermark': 'No watermark',
       'real_size_pdf': 'Actual-size PDF',
-      'hi_res_pdf': 'High-resolution PDF',
       'purchase_btn': 'Buy for \$4.99',
       'perler': 'Perler',
       'nano': 'Nano',
       'hama': 'Hama',
     },
     'zh': {
-      'app_name': 'beadot',
       'select_settings': '选择设置',
       'brand': '品牌',
       'plate_shape': '模板形状',
@@ -255,7 +239,6 @@ class AppLocalizations {
       'dither': '抖动',
       'max_colors': '最大颜色数',
       'converting': '转换中...',
-      'save': '保存',
       'preview': '查看成品',
       'adjust_colors': '调整颜色数',
       'pdf_export': 'PDF导出',
@@ -263,9 +246,7 @@ class AppLocalizations {
       'share': '分享',
       'gallery': '作品集',
       'settings': '设置',
-      'premium': '高级版',
       'premium_title': '高级版',
-      'premium_price': '¥30 购买',
       'restore': '恢复购买',
       'processing': '处理中...',
       'purchased': '已购买',
@@ -314,7 +295,6 @@ class AppLocalizations {
       'custom_size': '自定义尺寸（最大128×128）',
       'no_watermark': '无水印',
       'real_size_pdf': '实际尺寸PDF',
-      'hi_res_pdf': '高分辨率PDF',
       'purchase_btn': '¥30 购买',
       'perler': '拼豆',
       'nano': '迷你拼豆',
