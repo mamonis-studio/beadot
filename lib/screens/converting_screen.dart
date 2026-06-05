@@ -118,8 +118,9 @@ class _ConvertingScreenState extends State<ConvertingScreen> {
       }
     } catch (e) {
       if (mounted && !_cancelled) {
+        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text('${l.error}: $e')),
         );
         Navigator.pop(context);
       }

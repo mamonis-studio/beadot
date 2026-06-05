@@ -28,7 +28,6 @@ class AppLocalizations {
   String get adjustColors => get('adjust_colors');
   String get pdfExport => get('pdf_export');
   String get shoppingList => get('shopping_list');
-  String get share => get('share');
   String get gallery => get('gallery');
   String get settings => get('settings');
   String get premiumTitle => get('premium_title');
@@ -83,6 +82,16 @@ class AppLocalizations {
   String get cameraStartFailed => get('camera_start_failed');
   String get retry => get('retry');
   String get urlOpenFailed => get('url_open_failed');
+  String get photoNotFound => get('photo_not_found');
+  String get holdToCompare => get('hold_to_compare');
+  String get columns => get('columns');
+  String get rows => get('rows');
+  String get customSizeTitle => get('custom_size_title');
+  String get apply => get('apply');
+  String get next => get('next');
+  String get colorType => get('color_type');
+  String get custom => get('custom');
+  String get ok => get('ok');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -102,7 +111,6 @@ class AppLocalizations {
       'adjust_colors': '色数調整',
       'pdf_export': 'PDF出力',
       'shopping_list': '買い物リスト',
-      'share': 'シェア',
       'gallery': 'GALLERY',
       'settings': '設定',
       'premium_title': 'PREMIUM',
@@ -120,6 +128,16 @@ class AppLocalizations {
       'camera_start_failed': 'カメラの起動に失敗しました',
       'retry': 'リトライ',
       'url_open_failed': 'URLを開けませんでした',
+      'photo_not_found': '写真が見つかりません',
+      'hold_to_compare': '長押しで比較',
+      'columns': '列数',
+      'rows': '行数',
+      'custom_size_title': 'カスタムサイズ',
+      'apply': '適用',
+      'next': '次へ',
+      'color_type': 'カラータイプ',
+      'custom': 'カスタム',
+      'ok': 'OK',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -174,7 +192,6 @@ class AppLocalizations {
       'adjust_colors': 'Adjust Colors',
       'pdf_export': 'PDF Export',
       'shopping_list': 'Shopping List',
-      'share': 'Share',
       'gallery': 'GALLERY',
       'settings': 'Settings',
       'premium_title': 'PREMIUM',
@@ -192,6 +209,16 @@ class AppLocalizations {
       'camera_start_failed': 'Failed to start camera',
       'retry': 'Retry',
       'url_open_failed': "Couldn't open the link",
+      'photo_not_found': 'Photo not found',
+      'hold_to_compare': 'Hold to compare',
+      'columns': 'Columns',
+      'rows': 'Rows',
+      'custom_size_title': 'Custom Size',
+      'apply': 'Apply',
+      'next': 'Next',
+      'color_type': 'Color Type',
+      'custom': 'Custom',
+      'ok': 'OK',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -246,7 +273,6 @@ class AppLocalizations {
       'adjust_colors': '调整颜色数',
       'pdf_export': 'PDF导出',
       'shopping_list': '购物清单',
-      'share': '分享',
       'gallery': '作品集',
       'settings': '设置',
       'premium_title': '高级版',
@@ -264,6 +290,16 @@ class AppLocalizations {
       'camera_start_failed': '相机启动失败',
       'retry': '重试',
       'url_open_failed': '无法打开链接',
+      'photo_not_found': '找不到照片',
+      'hold_to_compare': '长按对比',
+      'columns': '列数',
+      'rows': '行数',
+      'custom_size_title': '自定义尺寸',
+      'apply': '应用',
+      'next': '下一步',
+      'color_type': '颜色类型',
+      'custom': '自定义',
+      'ok': '确定',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',

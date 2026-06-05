@@ -84,7 +84,7 @@ class _PatternScreenState extends State<PatternScreen> {
                     Navigator.pop(ctx);
                     await _reoptimize(newMax);
                   },
-                  child: const Text('APPLY', style: TextStyle(letterSpacing: 2)),
+                  child: Text(l.apply, style: const TextStyle(letterSpacing: 2)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -265,10 +265,6 @@ class _PatternScreenState extends State<PatternScreen> {
               Navigator.pop(ctx);
               _exportPdf();
             }),
-            _actionTile(Icons.share, l.share, () {
-              Navigator.pop(ctx);
-              _sharePattern();
-            }),
             const SizedBox(height: 16),
           ],
         ),
@@ -288,13 +284,6 @@ class _PatternScreenState extends State<PatternScreen> {
     // PDF export will be handled by PdfService
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('PDF export coming soon')),
-    );
-  }
-
-  void _sharePattern() {
-    // Share will be handled by share_plus
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Share coming soon')),
     );
   }
 }

@@ -92,28 +92,29 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
       _showPremiumDialog();
       return;
     }
+    final l = AppLocalizations.of(context);
     int cols = 32, rows = 32;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('CUSTOM SIZE', style: TextStyle(letterSpacing: 2, fontSize: 16)),
+        title: Text(l.customSizeTitle, style: const TextStyle(letterSpacing: 2, fontSize: 16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: const InputDecoration(labelText: 'Columns (8-128)'),
+              decoration: InputDecoration(labelText: '${l.columns} (8-128)'),
               keyboardType: TextInputType.number,
               onChanged: (v) => cols = int.tryParse(v) ?? 32,
             ),
             TextField(
-              decoration: const InputDecoration(labelText: 'Rows (8-128)'),
+              decoration: InputDecoration(labelText: '${l.rows} (8-128)'),
               keyboardType: TextInputType.number,
               onChanged: (v) => rows = int.tryParse(v) ?? 32,
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('CANCEL')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.cancel)),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
@@ -122,7 +123,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
                 _maxColors = ConversionDefaults.defaultMaxColors(_size.columns);
               });
             },
-            child: const Text('OK'),
+            child: Text(l.ok),
           ),
         ],
       ),
@@ -208,7 +209,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
             // COLOR TYPE (Perler only)
             if (_brand == BeadBrand.perler) ...[
               const SizedBox(height: 16),
-              _sectionLabel('COLOR TYPE'),
+              _sectionLabel(l.colorType),
               const SizedBox(height: 8),
               SegmentControl<ColorFilter>(
                 items: ColorFilter.values,
@@ -319,7 +320,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('NEXT', style: TextStyle(fontSize: 16, letterSpacing: 4)),
+                child: Text(l.next, style: const TextStyle(fontSize: 16, letterSpacing: 4)),
               ),
             ),
             const SizedBox(height: 32),
@@ -337,6 +338,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
   }
 
   List<Widget> _buildSizeButtons(bool isPremium) {
+    final l = AppLocalizations.of(context);
     final sizes = _availableSizes;
     final buttons = <Widget>[];
 
@@ -403,7 +405,7 @@ class _SettingsSelectScreenState extends State<SettingsSelectScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _size.label == 'CUSTOM' ? 'CUSTOM — ${_size.displaySize}' : 'CUSTOM',
+                    _size.label == 'CUSTOM' ? '${l.custom} — ${_size.displaySize}' : l.custom,
                     style: TextStyle(
                       fontSize: 16,
                       color: _size.label == 'CUSTOM' ? Colors.white : const Color(0xFF111111),

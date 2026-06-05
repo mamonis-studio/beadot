@@ -53,9 +53,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
           // Instructions
           Container(
             padding: const EdgeInsets.all(16),
-            child: const Text(
-              'HOLD TO COMPARE',
-              style: TextStyle(
+            child: Text(
+              l.holdToCompare,
+              style: const TextStyle(
                 fontSize: 11, color: Color(0xFF888888),
                 letterSpacing: 2,
               ),
@@ -74,7 +74,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
     final file = File(path);
     if (!file.existsSync()) {
-      return const Center(child: Text('Photo not found', style: TextStyle(color: Color(0xFF888888))));
+      return Center(child: Text(AppLocalizations.of(context).photoNotFound, style: const TextStyle(color: Color(0xFF888888))));
     }
     return Center(
       key: const ValueKey('original'),
