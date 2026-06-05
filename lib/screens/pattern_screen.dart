@@ -1,4 +1,7 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:printing/printing.dart';
+import '../services/pdf_service.dart';
 import '../l10n/app_localizations.dart';
 import '../models/bead_color.dart';
 import '../models/pattern_data.dart';
@@ -280,10 +283,59 @@ class _PatternScreenState extends State<PatternScreen> {
     );
   }
 
-  void _exportPdf() {
-    // PDF export will be handled by PdfService
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('PDF export coming soon')),
+  Future<void> _exportPdf() async {
+    final l = AppLocalizations.of(context);
+
+    // 1. Loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            const SizedBox(
+              width: 20, height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            const SizedBox(width: 16),
+            Expanded(child: Text(l.generatingPdf)),
+          ],
+        ),
+      ),
     );
+
+    // 2. Generate the PDF up front (never inside onLayout).
+    Uint8List bytes;
+    try {
+      bytes = await PdfService.generate(_pattern);
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context); // close loading
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l.error}: $e')),
+        );
+      }
+      return;
+    }
+
+    // 3. Bail out if the screen is gone.
+    if (!mounted) return;
+
+    // 4. Close loading exactly once on the success path.
+    Navigator.pop(context);
+
+    // 5. Hand the bytes to the OS print/share sheet.
+    try {
+      await Printing.layoutPdf(
+        onLayout: (format) async => bytes,
+        name: 'beadot_pattern',
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l.error}: $e')),
+        );
+      }
+    }
   }
 }

@@ -92,6 +92,7 @@ class AppLocalizations {
   String get colorType => get('color_type');
   String get custom => get('custom');
   String get ok => get('ok');
+  String get generatingPdf => get('generating_pdf');
   String get perler => get('perler');
   String get nano => get('nano');
   String get hama => get('hama');
@@ -138,6 +139,7 @@ class AppLocalizations {
       'color_type': 'カラータイプ',
       'custom': 'カスタム',
       'ok': 'OK',
+      'generating_pdf': 'PDF生成中…',
       'solid_only': 'ソリッドのみ',
       'include_pearl': 'パール含む',
       'all_colors': '全色',
@@ -219,6 +221,7 @@ class AppLocalizations {
       'color_type': 'Color Type',
       'custom': 'Custom',
       'ok': 'OK',
+      'generating_pdf': 'Generating PDF…',
       'solid_only': 'Solid Only',
       'include_pearl': 'Include Pearl',
       'all_colors': 'All Colors',
@@ -300,6 +303,7 @@ class AppLocalizations {
       'color_type': '颜色类型',
       'custom': '自定义',
       'ok': '确定',
+      'generating_pdf': '正在生成PDF…',
       'solid_only': '仅纯色',
       'include_pearl': '含珠光',
       'all_colors': '全部颜色',
