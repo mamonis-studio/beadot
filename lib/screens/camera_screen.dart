@@ -22,6 +22,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   int _cameraIndex = 0;
   bool _isInitialized = false;
   bool _isTakingPhoto = false;
+  bool _isStarting = false;
   bool _permissionDenied = false;
   bool _hasError = false;
   int _patternCount = 0;
@@ -65,53 +66,67 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Future<void> _startCamera(int index) async {
-    // Reset state before reinitializing
-    if (mounted) setState(() => _isInitialized = false);
-
-    // Dispose old controller first
-    final oldController = _controller;
-    _controller = null;
-    await oldController?.dispose();
-
-    if (_cameras == null || _cameras!.isEmpty) return;
-
-    final newController = CameraController(
-      _cameras![index],
-      ResolutionPreset.high,
-      enableAudio: false,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
-
+    // Serialize start calls (resume / switch / init) to prevent double-init
+    // races that leak controllers or trigger "camera in use" errors.
+    if (_isStarting) return;
+    _isStarting = true;
     try {
-      await newController.initialize();
+      // Reset state before reinitializing
+      if (mounted) setState(() => _isInitialized = false);
 
-      // Lock capture orientation to portrait to prevent sensor rotation issues
-      await newController.lockCaptureOrientation(DeviceOrientation.portraitUp);
+      // Dispose old controller first
+      final oldController = _controller;
+      _controller = null;
+      await oldController?.dispose();
 
-      _controller = newController;
-      if (mounted) {
+      if (_cameras == null || _cameras!.isEmpty) return;
+
+      final newController = CameraController(
+        _cameras![index],
+        ResolutionPreset.high,
+        enableAudio: false,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+
+      try {
+        await newController.initialize();
+
+        // Lock capture orientation to portrait to prevent sensor rotation issues
+        await newController.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
+        // If the screen was disposed while initializing, drop the controller.
+        if (!mounted) {
+          await newController.dispose();
+          return;
+        }
+
+        _controller = newController;
         setState(() {
           _isInitialized = true;
           _hasError = false;
         });
+      } catch (e) {
+        debugPrint('Camera start error: $e');
+        await newController.dispose();
+        if (mounted) setState(() => _hasError = true);
       }
-    } catch (e) {
-      debugPrint('Camera start error: $e');
-      await newController.dispose();
-      if (mounted) setState(() => _hasError = true);
+    } finally {
+      _isStarting = false;
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final controller = _controller;
-    if (controller == null) return;
-
-    if (state == AppLifecycleState.inactive) {
-      setState(() => _isInitialized = false);
-      controller.dispose();
-      _controller = null;
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      final c = _controller;
+      if (c != null && c.value.isInitialized) {
+        if (mounted) setState(() => _isInitialized = false);
+        c.dispose();
+        _controller = null;
+      }
     } else if (state == AppLifecycleState.resumed) {
+      // Re-init even when _controller is null (it was disposed on inactive).
       _startCamera(_cameraIndex);
     }
   }
