@@ -1,5 +1,0 @@
-Initial Release
-- Auto-generate bead patterns from photos
-- Perler / Nano / Hama beads support
-- 5 plate shapes
-- Shopping list & PDF export
