@@ -109,3 +109,6 @@ fastlane/test_output
 
 # Project-local backups
 *.zip
+
+# Fastlane 認証情報
+fastlane/Appfile
